@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_image"
+        android:title="Images"
+        android:icon="@drawable/image_vector"
+        ></item>
+
+    <item
+        android:id="@+id/nav_video"
+        android:title="Videos"
+        android:icon="@drawable/video_vector"
+        ></item>
+
+    <item
+        android:id="@+id/nav_saved"
+        android:title="Saved"
+        android:icon="@drawable/save_vector"
+        ></item>
+
+
+
+
+</menu>

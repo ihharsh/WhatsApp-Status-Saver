@@ -1,4 +1,4 @@
-package com.example.whatsappstatussaver
+package com.example.whatsappstatussaver.Adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

@@ -1,4 +1,4 @@
-package com.example.whatsappstatussaver
+package com.example.whatsappstatussaver.Model
 
 import android.net.Uri
 

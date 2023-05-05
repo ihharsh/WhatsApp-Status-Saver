@@ -1,35 +1,64 @@
-package com.example.whatsappstatussaver
+package com.example.whatsappstatussaver.Activity
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.storage.StorageManager
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.Fragment
+import com.example.whatsappstatussaver.Fragments.ImageFragment
+import com.example.whatsappstatussaver.Fragments.SavedFragment
+import com.example.whatsappstatussaver.Fragments.VideoFragment
+import com.example.whatsappstatussaver.Model.StoryModel
+import com.example.whatsappstatussaver.R
 import com.example.whatsappstatussaver.databinding.ActivityMainBinding
-import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
 
-    var binding : ActivityMainBinding? = null
+    lateinit var binding : ActivityMainBinding
     private val REQUEST_CODE_PICK_FOLDER = 1
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
-       getFolderPermission()
+        setContentView(binding.root)
 
-//        val sharedPref = getSharedPreferences(
-//            getString(1), Context.MODE_PRIVATE)
+        loadFragment(ImageFragment())
+
+        binding.bottomNav.setOnNavigationItemSelectedListener { item->
+
+            var id = item.itemId
+
+            if(id== R.id.nav_image) {
+                loadFragment(ImageFragment())
+            } else if (id==R.id.nav_video) {
+                loadFragment(VideoFragment())
+
+            } else if(id==R.id.nav_saved){
+                loadFragment(SavedFragment())
+
+            }
+
+
+            return@setOnNavigationItemSelectedListener true
+        }
+
+
     }
+
+    private fun loadFragment(fragment : Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container,fragment)
+            .commit()
+    }
+
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun getFolderPermission() {
 
@@ -57,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_PICK_FOLDER && resultCode == Activity.RESULT_OK) {
 
             val folderUri = data?.data ?: return
-            binding?.tv?.text = folderUri.toString()
+//            binding?.tv?.text = folderUri.toString()
 
 
             contentResolver.takePersistableUriPermission(folderUri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
