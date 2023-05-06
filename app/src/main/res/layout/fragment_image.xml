@@ -6,16 +6,10 @@
     tools:context=".Fragments.ImageFragment">
 
 
-    <TextView
-        android:id="@+id/frag_image_tv"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_image_frag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Image Fragment"
-        android:textSize="50dp" />
-
-    <ImageView
-        android:layout_width="214dp"
-        android:layout_height="562dp"
-        android:src="@drawable/save_vector" />
+        tools:listitem="@layout/image_frag_story_item" />
 
 </FrameLayout>

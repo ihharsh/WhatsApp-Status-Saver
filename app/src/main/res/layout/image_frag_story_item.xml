@@ -5,4 +5,10 @@
     android:padding="5dp"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/iv_image_frag"
+        android:src="@drawable/video_vector"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
+
 </RelativeLayout>

@@ -22,21 +22,28 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityMainBinding
     private val REQUEST_CODE_PICK_FOLDER = 1
+    lateinit var stories: ArrayList<StoryModel>
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        stories = ArrayList()
 
-        loadFragment(ImageFragment())
+        getFolderPermission()
+
+
+
+
+
 
         binding.bottomNav.setOnNavigationItemSelectedListener { item->
 
             var id = item.itemId
 
             if(id== R.id.nav_image) {
-                loadFragment(ImageFragment())
+                loadFragment(ImageFragment(stories))
             } else if (id==R.id.nav_video) {
                 loadFragment(VideoFragment())
 
@@ -86,7 +93,6 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_PICK_FOLDER && resultCode == Activity.RESULT_OK) {
 
             val folderUri = data?.data ?: return
-//            binding?.tv?.text = folderUri.toString()
 
 
             contentResolver.takePersistableUriPermission(folderUri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -94,15 +100,20 @@ class MainActivity : AppCompatActivity() {
 
             val folder = DocumentFile.fromTreeUri(application, folderUri) ?: return
 
-            val stories = mutableListOf<StoryModel>()
+             stories = ArrayList<StoryModel>()
             folder.listFiles().forEach { file ->
                 val story = StoryModel(
                     path = file.uri.toString(),
                     filename = file.name ?: "",
                     uri = file.uri
                 )
-                stories.add(story)
+                if(story.filename.endsWith(".jpg")){
+                    stories.add(story)
+                }
+
             }
+
+            loadFragment(ImageFragment(stories))
 
     }
 
