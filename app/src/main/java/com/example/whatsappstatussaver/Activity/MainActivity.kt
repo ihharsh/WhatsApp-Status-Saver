@@ -11,6 +11,7 @@ import android.os.storage.StorageManager
 import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.example.whatsappstatussaver.Fragments.ImageFragment
 import com.example.whatsappstatussaver.Fragments.SavedFragment
 import com.example.whatsappstatussaver.Fragments.VideoFragment
@@ -18,45 +19,115 @@ import com.example.whatsappstatussaver.Model.StoryModel
 import com.example.whatsappstatussaver.R
 import com.example.whatsappstatussaver.databinding.ActivityMainBinding
 
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityMainBinding
     private val REQUEST_CODE_PICK_FOLDER = 1
-    lateinit var stories: ArrayList<StoryModel>
+    lateinit var stories_images: ArrayList<StoryModel>
+    lateinit var stories_videos: ArrayList<StoryModel>
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        stories = ArrayList()
+        stories_images = ArrayList()
+        stories_videos = ArrayList()
 
-        getFolderPermission()
-
-
-
+        var bn = binding.bottomN
 
 
 
-        binding.bottomNav.setOnNavigationItemSelectedListener { item->
+        SetNavIcons(bn)
 
-            var id = item.itemId
+        val result = readDataFromShPref()
 
-            if(id== R.id.nav_image) {
-                loadFragment(ImageFragment(stories))
-            } else if (id==R.id.nav_video) {
-                loadFragment(VideoFragment())
+        if(result) {
 
-            } else if(id==R.id.nav_saved){
-                loadFragment(SavedFragment())
+            val sharedpref = getSharedPreferences("DATA_PATH", MODE_PRIVATE)
+            val folderUri = sharedpref.getString("PATH","")
+
+
+            contentResolver.takePersistableUriPermission(Uri.parse(folderUri),Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+
+            val folder = DocumentFile.fromTreeUri(application, Uri.parse(folderUri)) ?: return
+
+            stories_images = ArrayList<StoryModel>()
+            folder.listFiles().forEach { file ->
+                val story = StoryModel(
+                    path = file.uri.toString(),
+                    filename = file.name ?: "",
+                    uri = file.uri
+                )
+                if(story.filename.endsWith(".jpg")){
+                    stories_images.add(story)
+                } else if(story.filename.endsWith(".mp4")) {
+                    stories_videos.add(story)
+                }
 
             }
 
+            loadFragment(ImageFragment(stories_images))
 
-            return@setOnNavigationItemSelectedListener true
+
+
+        } else {
+            getFolderPermission()
+        }
+
+        getFolderPermission()
+
+        bn.show(1)
+        bn.setOnClickMenuListener {model ->
+
+           var id = model.id
+
+            if(id== 1) {
+                loadFragment(ImageFragment(stories_images))
+            } else if (id==2) {
+                loadFragment(VideoFragment(stories_videos))
+
+            } else if(id==3){
+                loadFragment(SavedFragment())
+
+            }
         }
 
 
+
+
+
+
+
+
+
+    }
+
+    private fun readDataFromShPref(): Boolean {
+
+        val sh = getSharedPreferences("DATA_PATH", MODE_PRIVATE)
+        val uriPath = sh.getString("PATH","")
+
+        if(uriPath!=null) {
+            if(uriPath.isEmpty()){
+                return false
+            }
+        }
+
+        return true
+
+    }
+
+    private fun SetNavIcons(bn: MeowBottomNavigation) {
+        bn.add(MeowBottomNavigation.Model(1, R.drawable.image_vector))
+        bn.add(MeowBottomNavigation.Model(2, R.drawable.video_vector))
+        bn.add(MeowBottomNavigation.Model(3, R.drawable.save_vector))
     }
 
     private fun loadFragment(fragment : Fragment) {
@@ -95,12 +166,21 @@ class MainActivity : AppCompatActivity() {
             val folderUri = data?.data ?: return
 
 
+
+            val sharedPref = getSharedPreferences("DATA_PATH", MODE_PRIVATE)
+            val edit = sharedPref.edit()
+            edit.putString("PATH",folderUri.toString())
+            edit.apply()
+
+
+
+
             contentResolver.takePersistableUriPermission(folderUri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
 
             val folder = DocumentFile.fromTreeUri(application, folderUri) ?: return
 
-             stories = ArrayList<StoryModel>()
+             stories_images = ArrayList<StoryModel>()
             folder.listFiles().forEach { file ->
                 val story = StoryModel(
                     path = file.uri.toString(),
@@ -108,12 +188,14 @@ class MainActivity : AppCompatActivity() {
                     uri = file.uri
                 )
                 if(story.filename.endsWith(".jpg")){
-                    stories.add(story)
+                    stories_images.add(story)
+                } else if(story.filename.endsWith(".mp4")) {
+                    stories_videos.add(story)
                 }
 
             }
 
-            loadFragment(ImageFragment(stories))
+            loadFragment(ImageFragment(stories_images))
 
     }
 

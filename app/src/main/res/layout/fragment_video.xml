@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.VideoFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_video_frag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="50dp"
-        android:text="Video Fragment" />
+        tools:listitem="@layout/rv_story_item" />
 
 </FrameLayout>

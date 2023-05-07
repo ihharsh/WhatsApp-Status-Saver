@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.whatsappstatussaver.Adapter.Adapter
 import com.example.whatsappstatussaver.Model.StoryModel
@@ -29,7 +30,7 @@ class ImageFragment(ImageList: ArrayList<StoryModel>) : Fragment() {
         binding = FragmentImageBinding.inflate(inflater, container, false)
 
         var adapter = Adapter(imageList)
-        binding.rvImageFrag.layoutManager = LinearLayoutManager(context)
+        binding.rvImageFrag.layoutManager = GridLayoutManager(context,2)
         binding.rvImageFrag.adapter = adapter
 
 

@@ -5,18 +5,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.whatsappstatussaver.Adapter.Adapter
+import com.example.whatsappstatussaver.Model.StoryModel
 import com.example.whatsappstatussaver.R
+import com.example.whatsappstatussaver.databinding.FragmentVideoBinding
 
 
-class VideoFragment : Fragment() {
+class VideoFragment(videoList: ArrayList<StoryModel>) : Fragment() {
 
-
+     lateinit var binding: FragmentVideoBinding
+     var videoList = videoList
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_video, container, false)
+
+        binding = FragmentVideoBinding.inflate(inflater,container,false)
+
+        var adapter = Adapter(videoList)
+        binding.rvVideoFrag.layoutManager = GridLayoutManager(context,2)
+        binding.rvVideoFrag.adapter = adapter
+
+
+
+        return binding.root
     }
 
 

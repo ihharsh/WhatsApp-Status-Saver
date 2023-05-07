@@ -10,6 +10,6 @@
         android:id="@+id/rv_image_frag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/image_frag_story_item" />
+        tools:listitem="@layout/rv_story_item" />
 
 </FrameLayout>

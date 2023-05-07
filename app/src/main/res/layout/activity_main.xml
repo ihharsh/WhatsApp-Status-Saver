@@ -10,18 +10,26 @@
        android:id="@+id/fragment_container"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:layout_alignBottom="@+id/bottom_nav"/>
+       android:layout_above="@+id/bottom_n"
+       android:layout_alignBottom="@id/bottom_n"
+       />
 
-   <com.google.android.material.bottomnavigation.BottomNavigationView
-       android:id="@+id/bottom_nav"
+
+   <com.etebarian.meowbottomnavigation.MeowBottomNavigation
+       android:id="@+id/bottom_n"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       app:layout_constraintBottom_toBottomOf="parent"
-       app:layout_constraintTop_toTopOf="parent"
-       app:menu="@menu/nav_items"
+       app:mbn_circleColor="@color/white"
+       app:mbn_backgroundBottomColor="@color/main_color"
        android:layout_alignParentBottom="true"
-       app:layout_constraintVertical_bias="0.997"
-       tools:layout_editor_absoluteX="38dp" />
+       app:mbn_defaultIconColor="@color/white"
+       app:mbn_rippleColor="#2f424242"
+       app:mbn_selectedIconColor="@color/main_color"
+       app:mbn_shadowColor="#1f212121"
+       />
+
+
+
 
 
 
