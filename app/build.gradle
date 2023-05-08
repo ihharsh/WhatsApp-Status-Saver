@@ -49,6 +49,8 @@ dependencies {
 
     implementation 'com.etebarian:meow-bottom-navigation:1.2.0'
 
+    implementation 'com.github.MikeOrtiz:TouchImageView:1.4.1'
+
 
 
 }

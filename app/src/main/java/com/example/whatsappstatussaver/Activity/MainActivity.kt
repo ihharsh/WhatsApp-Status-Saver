@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             getFolderPermission()
         }
 
-        getFolderPermission()
+       // getFolderPermission()
 
         bn.show(1)
         bn.setOnClickMenuListener {model ->
