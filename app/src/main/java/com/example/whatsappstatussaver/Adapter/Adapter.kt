@@ -13,7 +13,7 @@ import com.example.whatsappstatussaver.Model.StoryModel
 import com.example.whatsappstatussaver.databinding.RvStoryItemBinding
 
 
-class Adapter(ImageList: ArrayList<StoryModel>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(ImageList: ArrayList<StoryModel>,private val clickListener:(StoryModel,View)->Unit) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     var imageList = ImageList
     inner class ViewHolder(val binding: RvStoryItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -45,6 +45,11 @@ class Adapter(ImageList: ArrayList<StoryModel>) : RecyclerView.Adapter<Adapter.V
             } else {
                 onClickVideo(story,holder.itemView.context)
 
+            }
+
+            imageView.setOnLongClickListener {
+                clickListener(story,it)
+                return@setOnLongClickListener true
             }
 
 

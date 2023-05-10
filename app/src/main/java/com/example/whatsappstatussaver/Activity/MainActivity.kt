@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
         SetNavIcons(bn)
 
         val result = readDataFromShPref()
